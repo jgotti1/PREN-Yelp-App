@@ -2,6 +2,7 @@ const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const db = require("./db");
 
 const app = express();
 dotenv.config();
@@ -23,13 +24,10 @@ app.use(express.json());
 //************** routes ********************
 
 //Get all Restuarants
-app.get("/api/v1/restaurants", (req, res) => {
-  res.status(200).json({
-    status: "Success",
-    data: {
-      resturants: ["Wendays", "Burger King"],
-    },
-  });
+app.get("/api/v1/restaurants", async (req, res) => {
+  const result = await db.query("SELECT * FROM restaurants");
+  res.send(result.rows);
+  console.log(`There are ${result.rowCount} records in our database`);
 });
 
 //Get a single Restuarant by ID
