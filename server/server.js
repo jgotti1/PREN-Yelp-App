@@ -2,9 +2,11 @@ const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const cors = require("cors");
 const db = require("./db");
 
 const app = express();
+app.use(cors());
 dotenv.config();
 
 // *********** Middleware ***********
@@ -57,7 +59,7 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
       req.body.price_range,
       req.params.id,
     ]);
-    res.json(result.rows);
+    res.json(result.rows[0]);
   } catch (error) {
     console.log(error.message);
   }
@@ -67,8 +69,7 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
 app.delete("/api/v1/restaurants/:id", async (req, res) => {
   try {
     await db.query("DELETE FROM restaurants WHERE id = $1 RETURNING *", [req.params.id]);
-    res.json(result.rows)
-    
+    res.json(result.rows[0]);
   } catch (error) {
     console.log(error.message);
   }
@@ -82,7 +83,8 @@ app.post("/api/v1/restaurants", async (req, res) => {
       req.body.location,
       req.body.price_range,
     ]);
-    res.json(result.rows);
+    res.json(result.rows[0]);
+    console.log(result.rows[0]);
   } catch (error) {
     console.log(error.message);
   }
