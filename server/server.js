@@ -68,7 +68,7 @@ app.put("/api/v1/restaurants/:id", async (req, res) => {
 //DELETE a single Restuarant by ID
 app.delete("/api/v1/restaurants/:id", async (req, res) => {
   try {
-    await db.query("DELETE FROM restaurants WHERE id = $1 RETURNING *", [req.params.id]);
+    const result = await db.query("DELETE FROM restaurants WHERE id = $1 RETURNING *", [req.params.id]);
     res.json(result.rows[0]);
   } catch (error) {
     console.log(error.message);
