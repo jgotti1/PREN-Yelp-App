@@ -13,7 +13,7 @@ const Update = () => {
   useEffect(() => {
     const restaurant = async () => {
       const response = await RestFinder.get(`/${id}`);
-      console.log(response.data[0].id);
+
       setName(response.data[0].name);
       setLocation(response.data[0].location);
       setPriceRange(response.data[0].price_range);

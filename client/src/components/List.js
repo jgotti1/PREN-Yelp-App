@@ -6,17 +6,18 @@ import { useNavigate } from "react-router-dom";
 
 const List = () => {
   const { restaurants, setRestaurants } = useContext(RestaurantsContext);
-  // const [sortedData, setSortedData] = useState();
 
   const navigate = useNavigate();
 
   //Edit Entries
-  const handleEdit = (id) => {
+  const handleEdit = (e, id) => {
+    e.stopPropagation();
     navigate(`/restaurants/${id}/update`);
   };
 
   //Delete an item in the DB
-  const handleDelete = async (id) => {
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
     try {
       const response = await RestaurantFinder.delete(`/${id}`);
       if (response.ok) {
@@ -41,17 +42,21 @@ const List = () => {
     const fetchData = async () => {
       try {
         const response = await RestaurantFinder.get("/");
-        console.log("useeffect ran");
+
         // sort by name on the react side but moving it to the back end
         // const sortMe = [...response.data].sort((a, b) => a.name.localeCompare(b.name));
         setRestaurants(response.data);
-        console.log(restaurants.length);
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
   }, [restaurants.length, setRestaurants]);
+
+  //details page handling
+  const handleDetails = (id) => {
+    navigate(`/restaurants/${id}/details`);
+  };
 
   return (
     <div className="list-group">
@@ -70,15 +75,15 @@ const List = () => {
           {restaurants &&
             restaurants.map((restaurant) => {
               return (
-                <tr key={restaurant.id}>
+                <tr onClick={() => handleDetails(restaurant.id)} key={restaurant.id}>
                   <td>{restaurant.name}</td>
                   <td>{restaurant.location}</td>
                   <td>{"$".repeat(restaurant.price_range)}</td>
                   <td>reviews</td>
                   <td>
                     <button
-                      onClick={() => {
-                        handleEdit(restaurant.id);
+                      onClick={(e) => {
+                        handleEdit(e, restaurant.id);
                       }}
                       className="btn btn-warning">
                       Edit
@@ -86,8 +91,8 @@ const List = () => {
                   </td>
                   <td>
                     <button
-                      onClick={() => {
-                        handleDelete(restaurant.id);
+                      onClick={(e) => {
+                        handleDelete(e, restaurant.id);
                       }}
                       className="btn btn-danger">
                       Delete
