@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-// import { RestaurantsContext } from "../context/RestaurantsContext";
-// import { useContext } from "react";
+import { RestaurantsContext } from "../context/RestaurantsContext";
+import { useContext } from "react";
 import RestFinder from "../api/RestFinder";
 
 const AddNew = () => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [priceRange, setPriceRange] = useState("Price Range");
-  // const { addRestaurant } = useContext(RestaurantsContext);
+  const { addRestaurant } = useContext(RestaurantsContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,8 +20,7 @@ const AddNew = () => {
       // console.log(response);
       if (response.status === 200) {
         // below code to refresh the screen by running the useEffect in the list with this logic below //
-        // addRestaurant(response.data);
-        window.location = "/";
+        addRestaurant(response.data);
 
         //reset create form
         setName("");

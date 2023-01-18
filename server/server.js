@@ -28,7 +28,7 @@ app.use(express.json());
 //Get all Restuarants
 app.get("/api/v1/restaurants", async (req, res) => {
   try {
-    const results = await db.query("SELECT * FROM restaurants");
+    const results = await db.query("SELECT * FROM restaurants ORDER By name");
     res.json(results.rows);
     console.log(`There are ${results.rowCount} records in our database`);
   } catch (error) {
@@ -50,7 +50,7 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
   }
 });
 
-//UPDATE a single Restuarant by ID
+//UPDATE a single Restuarant by  ID
 app.put("/api/v1/restaurants/:id", async (req, res) => {
   try {
     const result = await db.query("UPDATE restaurants SET name = $1, location = $2, price_range = $3 WHERE id = $4 RETURNING *", [

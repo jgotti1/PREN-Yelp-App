@@ -1,11 +1,10 @@
-import React, { useEffect,} from "react";
+import React, { useEffect } from "react";
 import { useContext } from "react";
 import RestaurantFinder from "../api/RestFinder";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 import { useNavigate } from "react-router-dom";
 
 const List = () => {
-  
   const { restaurants, setRestaurants } = useContext(RestaurantsContext);
   // const [sortedData, setSortedData] = useState();
 
@@ -42,16 +41,17 @@ const List = () => {
     const fetchData = async () => {
       try {
         const response = await RestaurantFinder.get("/");
-
-        const sortMe = [...response.data].sort((a, b) => a.name.localeCompare(b.name));
-
-        setRestaurants(sortMe);
+        console.log("useeffect ran");
+        // sort by name on the react side but moving it to the back end
+        // const sortMe = [...response.data].sort((a, b) => a.name.localeCompare(b.name));
+        setRestaurants(response.data);
+        console.log(restaurants.length);
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
-  }, [setRestaurants]);
+  }, [restaurants.length, setRestaurants]);
 
   return (
     <div className="list-group">
