@@ -2,6 +2,8 @@ import React, { useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import RestFinder from "../api/RestFinder";
+import Reviews from "../components/Reviews";
+import StarRating from "../components/StarRating";
 import { RestaurantsContext } from "../context/RestaurantsContext";
 
 const Details = () => {
@@ -31,7 +33,14 @@ const Details = () => {
         className="btn-sm btn-secondary mt-3">
         Back to Listings
       </button>
-      <h1 className="text-center display-2">{selectedRestaurant && selectedRestaurant.name.toUpperCase()}</h1>
+      
+      <div>{selectedRestaurant && (
+        <>
+          <div className="mt-3"><Reviews/></div>
+        </>
+
+      )}</div>
+      
     </div>
   );
 };
