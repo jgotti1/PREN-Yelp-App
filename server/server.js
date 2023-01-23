@@ -1,7 +1,7 @@
 const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv");
-const morgan = require("morgan");
+// const morgan = require("morgan");
 const cors = require("cors");
 const db = require("./db");
 
@@ -11,7 +11,7 @@ dotenv.config();
 
 // *********** Middleware ***********
 //Middleware for logging
-app.use(morgan("combined"));
+// app.use(morgan("combined"));
 
 // app.use((req, res, next) => {
 //   console.log("MIDDLEWARE RAN");
@@ -42,9 +42,13 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
     // leaves us open to SQL injection below
     // const result = await db.query(`SELECT * FROM restaurants WHERE id = ${req.params.id}`);
     // correct
-    const result = await db.query("SELECT * FROM restaurants WHERE id = $1", [req.params.id]);
+    const restaurant = await db.query("SELECT * FROM restaurants WHERE id = $1", [req.params.id]);
+    const reviews = await db.query("SELECT * FROM reviews WHERE restaurant_id = $1", [req.params.id]);
 
-    res.json(result.rows);
+    res.json({
+      restaurant: restaurant.rows[0],
+      reviews: reviews.rows,
+    });
   } catch (error) {
     console.log(error.message);
   }
@@ -84,7 +88,6 @@ app.post("/api/v1/restaurants", async (req, res) => {
       req.body.price_range,
     ]);
     res.json(result.rows[0]);
-    console.log(result.rows[0]);
   } catch (error) {
     console.log(error.message);
   }
