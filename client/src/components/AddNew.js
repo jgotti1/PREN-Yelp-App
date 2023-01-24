@@ -17,7 +17,7 @@ const AddNew = () => {
         location,
         price_range: priceRange,
       });
-      // console.log(response);
+
       if (response.status === 200) {
         // below code to refresh the screen by running the useEffect in the list with this logic below //
         addRestaurant(response.data);

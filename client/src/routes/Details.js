@@ -9,6 +9,7 @@ import { RestaurantsContext } from "../context/RestaurantsContext";
 
 const Details = () => {
   const { selectedRestaurant, setSelectedRestaurant } = useContext(RestaurantsContext);
+  const { reviews } = useContext(RestaurantsContext);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -17,14 +18,13 @@ const Details = () => {
     const fetchData = async () => {
       try {
         const response = await RestFinder.get(`/${id}`);
-        // console.log(response.data);
         setSelectedRestaurant(response.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
-  }, [setSelectedRestaurant, id]);
+  }, [setSelectedRestaurant, id, reviews]);
 
   return (
     <div>
@@ -39,6 +39,7 @@ const Details = () => {
       <div>
         {selectedRestaurant && (
           <>
+            <h1 className="font-weight-bold display-1 text-center">{selectedRestaurant.restaurant.name.toUpperCase()}</h1>
             <div className="mt-3">
               <Reviews reviews={selectedRestaurant.reviews} />
             </div>

@@ -30,7 +30,7 @@ app.get("/api/v1/restaurants", async (req, res) => {
   try {
     const results = await db.query("SELECT * FROM restaurants ORDER By name");
     res.json(results.rows);
-    console.log(`There are ${results.rowCount} records in our database`);
+    // console.log(`There are ${results.rowCount} records in our database`);
   } catch (error) {
     console.log(error.message);
   }
@@ -86,6 +86,20 @@ app.post("/api/v1/restaurants", async (req, res) => {
       req.body.name,
       req.body.location,
       req.body.price_range,
+    ]);
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+//Create new Review
+app.post("/api/v1/restaurants/reviews", async (req, res) => {
+  try {
+    const result = await db.query("INSERT INTO reviews (restaurant_id, name, review, rating) VALUES ($1, $2, $3, $4) RETURNING *", [
+      req.body.restaurant_id,
+      req.body.name,
+      req.body.review,
+      req.body.rating,
     ]);
     res.json(result.rows[0]);
   } catch (error) {

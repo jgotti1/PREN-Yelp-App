@@ -14,9 +14,9 @@ const Update = () => {
     const restaurant = async () => {
       const response = await RestFinder.get(`/${id}`);
 
-      setName(response.data[0].name);
-      setLocation(response.data[0].location);
-      setPriceRange(response.data[0].price_range);
+      setName(response.data.restaurant.name);
+      setLocation(response.data.restaurant.location);
+      setPriceRange(response.data.restaurant.price_range);
     };
     restaurant();
   }, [id]);

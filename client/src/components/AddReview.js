@@ -1,13 +1,37 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import RestFinder from "../api/RestFinder";
+import { RestaurantsContext } from "../context/RestaurantsContext";
+import { useContext } from "react";
 
 const AddReview = () => {
   const [name, setName] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState("Rating");
+  const { id } = useParams();
+  const { addReview } = useContext(RestaurantsContext);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(name, reviewText, rating);
+    const restaurant_id = id;
+
+    try {
+      const response = await RestFinder.post("/reviews", {
+        restaurant_id,
+        name,
+        review: reviewText,
+        rating,
+      });
+
+      if (response.status === 200) {
+        addReview(response.data);
+        setName("");
+        setReviewText("");
+        setRating("Rating");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
