@@ -28,7 +28,12 @@ app.use(express.json());
 //Get all Restuarants
 app.get("/api/v1/restaurants", async (req, res) => {
   try {
-    const results = await db.query("SELECT * FROM restaurants ORDER By name");
+    // const results = await db.query("SELECT * FROM restaurants ORDER By name");
+    const results = await db.query(
+      "select * from restaurants left join (select restaurant_id, COUNT(*), TRUNC(AVG(rating),1) as average_rating from reviews group by restaurant_id) reviews on restaurants.id = reviews.restaurant_id ORDER By name;"
+    );
+
+    console.log(results.rows);
     res.json(results.rows);
     // console.log(`There are ${results.rowCount} records in our database`);
   } catch (error) {
@@ -42,7 +47,12 @@ app.get("/api/v1/restaurants/:id", async (req, res) => {
     // leaves us open to SQL injection below
     // const result = await db.query(`SELECT * FROM restaurants WHERE id = ${req.params.id}`);
     // correct
-    const restaurant = await db.query("SELECT * FROM restaurants WHERE id = $1", [req.params.id]);
+    // const restaurant = await db.query("SELECT * FROM restaurants WHERE id = $1", [req.params.id]);
+    const restaurant = await db.query(
+      "select * from restaurants left join (select restaurant_id, COUNT(*), TRUNC(AVG(rating),1) as average_rating from reviews group by restaurant_id) reviews on restaurants.id = reviews.restaurant_id where id = $1",
+      [req.params.id]
+    );
+
     const reviews = await db.query("SELECT * FROM reviews WHERE restaurant_id = $1", [req.params.id]);
 
     res.json({

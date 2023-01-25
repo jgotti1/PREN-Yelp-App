@@ -8,7 +8,7 @@ CREATE TABLE reviews (
         and rating <= 5
     )
 );
-select *
+("select *
 from restaurants
     left join(
         select restaurant_id,
@@ -16,7 +16,7 @@ from restaurants
             TRUNC(AVG(rating, 1)) as average_rating
         from reviews
         group by restaurant_id
-    ) reviews on restaurants.id = reviews.restaurant_id;
+    ) reviews on restaurants.id = reviews.restaurant_id;")
 
 
 INSERT INTO reviews (restaurant_id, name, review, rating) VALUES (94, 'John', 'this place smells like mo

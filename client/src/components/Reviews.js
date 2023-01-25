@@ -6,7 +6,7 @@ const Reviews = ({ reviews }) => {
     <div className="row row-cols-3 mb-2 justify-content-center">
       {reviews.map((review) => {
         return (
-          <>
+          
             <div key={review.id} className="card text-white bg-primary mb-3 mr-4" style={{ maxWidth: "30%" }}>
               <div className="card-header  d-flex justify-content-between">
                 <span>{review.name}</span>
@@ -18,7 +18,7 @@ const Reviews = ({ reviews }) => {
                 <p className="card-text">{review.review}</p>
               </div>
             </div>
-          </>
+          
         );
       })}
     </div>
