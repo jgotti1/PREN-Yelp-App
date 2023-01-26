@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 // const morgan = require("morgan");
 const cors = require("cors");
 const db = require("./db");
+const path = require("path");
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,12 @@ dotenv.config();
 //   console.log("MIDDLEWARE RAN");
 //   next();
 // });
+
+//Deploy code for mono app
+// serve static front end in production mode
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "public", "build")));
+}
 
 // returns rqe.body object
 app.use(express.json());

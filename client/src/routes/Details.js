@@ -49,7 +49,7 @@ const Details = () => {
                   <strong className="text-secondary">
                     <u>{selectedRestaurant.restaurant.count}</u>
                   </strong>{" "}
-                  <i>total reviews</i>
+                  <i>total review(s)</i>
                 </span>
               ) : (
                 <i>
